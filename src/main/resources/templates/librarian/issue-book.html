@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Book - Librarian</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="dashboard-container">
+    <nav class="navbar">
+        <div class="nav-brand">Library Management</div>
+        <div class="nav-items">
+            <a th:href="@{/librarian/dashboard}" class="btn">Dashboard</a>
+            <a th:href="@{/logout}" class="btn btn-logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="content">
+        <h1>Issue Book to Student</h1>
+
+        <div class="form-container">
+            <form th:action="@{/librarian/issue-book}" method="post">
+                <div class="form-group">
+                    <label for="bookId">Select Book:</label>
+                    <select id="bookId" name="bookId" required>
+                        <option value="">Choose a book...</option>
+                        <option th:each="book : ${books}"
+                                th:value="${book.id}"
+                                th:text="${book.title + ' by ' + book.author + ' (Available: ' + book.availableQuantity + ')'}"
+                                th:disabled="${book.availableQuantity == 0}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentName">Student Name:</label>
+                    <input type="text" id="studentName" name="studentName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentId">Student ID:</label>
+                    <input type="text" id="studentId" name="studentId" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Issue Book</button>
+            </form>
+
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
